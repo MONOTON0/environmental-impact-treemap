@@ -1,35 +1,47 @@
+# Treemap Visualization Project
+# COMP4037 Coursework 2 MANALI AHIRRAO 20644125
 
-# Environmental Impact Treemap Visualization
+# This script creates a Treemap showing environmental impacts 
+# of different diet groups based on GHG emissions and biodiversity impact.
 
-This project creates a Treemap to visualize the environmental impacts of different diet groups.  
-The visualization shows greenhouse gas emissions and biodiversity impact for each group, separated by gender and age group.
+import pandas as pd
+import plotly.express as px
 
-## Files Included
-- `treemap_visualization_student_version.py`: Python script to generate the Treemap.
-- `treemap_visualization.html`: Output file showing the interactive Treemap.
-- `Results_21MAR2022_nokcaladjust.csv`: Dataset used (from University of Oxford research).
+# Load the dataset
+# ( Results_21MAR2022_nokcaladjust.csv is in the same folder)
+data = pd.read_csv('Results_21MAR2022_nokcaladjust.csv')
 
-## How to Run
+# Grouped the data by diet group, gender, and age group
+grouped_data = data.groupby(['diet_group', 'sex', 'age_group']).agg({
+    'mean_ghgs': 'mean',   # Greenhouse gas emissions
+    'mean_bio': 'mean'     # Biodiversity impact
+}).reset_index()
 
-   ```
-   pip install pandas plotly
-   ```
- Place the CSV file and the Python script in the same folder.
-Run the script:
-   ```
-   python treemap_visualization_student_version.py
-   ```
-Open the generated `treemap_visualization.html` file in a web browser to view the Treemap.
+# Create the Treemap
+fig = px.treemap(
+    grouped_data,
+    path=['diet_group', 'sex', 'age_group'],  # Create hierarchy
+    values='mean_ghgs',                      # Size mapped to GHG emissions
+    color='mean_bio',                        # Color mapped to biodiversity loss
+    color_continuous_scale='YlGnBu',
+    color_continuous_midpoint=grouped_data['mean_bio'].median(),
+    labels={
+        'diet_group': 'Diet Group',
+        'sex': 'Gender',
+        'age_group': 'Age Group',
+        'mean_ghgs': 'GHG Emissions (kg CO2e)',
+        'mean_bio': 'Biodiversity Impact (species/day)'
+    }
+)
+fig.update_layout(
+    title="Environmental Footprint by Diet Group, Gender, and Age Group",
+    font=dict(size=14),
+    height=900,
+    paper_bgcolor='white',
+    plot_bgcolor='white'
+)
 
-## About the Visualization
-- **Box Size** = Mean GHG Emissions (kg CO₂e)
-- **Box Color** = Mean Biodiversity Impact (species extinction/day)
-- **Hierarchy** = Diet Group → Gender → Age Group
+# HTML save GITHUB
+fig.write_html('treemap_visualization_fixed.html', full_html=True, include_plotlyjs='cdn')
 
-## Author
-Manali A  
-COMP4037 Coursework 2
-
-## Reference
-Scarborough, P., Clark, M., Cobiac, L. et al. (2023).  
-Vegans, Vegetarians, Fish-eaters and Meat-eaters in the UK Show Discrepant Environmental Impacts. *Nature Food*. https://doi.org/10.1038/s43016-023-00795-w
+print(" Treemap saved as 'treemap_final_visualization_.html' successfully!")
