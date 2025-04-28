@@ -10,17 +10,16 @@ The visualization shows greenhouse gas emissions and biodiversity impact for eac
 - `Results_21MAR2022_nokcaladjust.csv`: Dataset used (from University of Oxford research).
 
 ## How to Run
-1. Make sure you have Python installed.
-2. Install the required libraries:
+
    ```
    pip install pandas plotly
    ```
-3. Place the CSV file and the Python script in the same folder.
-4. Run the script:
+ Place the CSV file and the Python script in the same folder.
+Run the script:
    ```
    python treemap_visualization_student_version.py
    ```
-5. Open the generated `treemap_visualization.html` file in a web browser to view the Treemap.
+Open the generated `treemap_visualization.html` file in a web browser to view the Treemap.
 
 ## About the Visualization
 - **Box Size** = Mean GHG Emissions (kg CO₂e)
