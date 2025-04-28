@@ -28,7 +28,7 @@ The visualization shows greenhouse gas emissions and biodiversity impact for eac
 - **Hierarchy** = Diet Group → Gender → Age Group
 
 ## Author
-[Your Name]  
+Manali A  
 COMP4037 Coursework 2
 
 ## Reference
